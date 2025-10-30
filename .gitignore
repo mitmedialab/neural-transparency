@@ -1,0 +1,67 @@
+# Environment variables
+.env
+.env.local
+.env.production
+*.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+*.egg-info/
+dist/
+build/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Data files and plots (analysis directory)
+iui-mech-int-analysis/json/cursor/plans
+iui-mech-int-analysis/json/
+iui-mech-int-analysis/data_clean/
+iui-mech-int-analysis/model_data/
+iui-mech-int-analysis/figures/
+iui-mech-int-analysis/*.csv
+iui-mech-int-analysis/*.png
+iui-mech-int-analysis/*.jpg
+iui-mech-int-analysis/*.jpeg
+iui-mech-int-analysis/2-embedding.py
+iui-mech-int-analysis/description.py
+iui-mech-int-analysis/baseline_equivalence_analysis.py
+
+# Keep config files
+!package.json
+!vercel.json
+!package-lock.json
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Vercel
+.vercel
+
+# Logs
+*.log
+
