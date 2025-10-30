@@ -9,7 +9,7 @@ This directory contains statistical analysis, data processing, and visualization
 ## Structure
 
 ```
-iui-mech-int-analysis/
+user-study-analysis/
 ├── data_clean/              # Cleaned datasets (CSV)
 ├── model_data/              # Processed model outputs (CSV)
 ├── figures/                 # Generated visualizations (PNG)
@@ -26,7 +26,7 @@ pip install pandas numpy matplotlib seaborn scipy jupyter
 
 **Run analysis:**
 ```bash
-cd iui-mech-int-analysis
+cd user-study-analysis
 jupyter notebook
 ```
 

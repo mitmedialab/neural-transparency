@@ -29,18 +29,18 @@ yarn-debug.log*
 yarn-error.log*
 
 # Data files and plots (analysis directory)
-iui-mech-int-analysis/json/cursor/plans
-iui-mech-int-analysis/json/
-iui-mech-int-analysis/data_clean/
-iui-mech-int-analysis/model_data/
-iui-mech-int-analysis/figures/
-iui-mech-int-analysis/*.csv
-iui-mech-int-analysis/*.png
-iui-mech-int-analysis/*.jpg
-iui-mech-int-analysis/*.jpeg
-iui-mech-int-analysis/2-embedding.py
-iui-mech-int-analysis/description.py
-iui-mech-int-analysis/baseline_equivalence_analysis.py
+user-study-analysis/json/cursor/plans
+user-study-analysis/json/
+user-study-analysis/data_clean/
+user-study-analysis/model_data/
+user-study-analysis/figures/
+user-study-analysis/*.csv
+user-study-analysis/*.png
+user-study-analysis/*.jpg
+user-study-analysis/*.jpeg
+user-study-analysis/2-embedding.py
+user-study-analysis/description.py
+user-study-analysis/baseline_equivalence_analysis.py
 
 # Keep config files
 !package.json

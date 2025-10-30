@@ -27,14 +27,14 @@ Your study will be live at `https://your-project.vercel.app`
 **Option 1: Vercel CLI**
 ```bash
 npm i -g vercel
-cd mech-chat-iui
+cd interface
 vercel dev
 ```
 Access at: `http://localhost:3000`
 
 **Option 2: Python Server (Testing)**
 ```bash
-cd mech-chat-iui
+cd interface
 python -m http.server 8000
 ```
 Access at: `http://localhost:8000`

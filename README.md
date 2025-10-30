@@ -6,32 +6,32 @@ A research platform for studying neural transparency in AI systems through perso
 
 ```
 neural-transparency-1/
-├── mech-chat-iui/              # Chat interface
+├── interface/                  # Chat interface
 ├── persona-vectors/            # Persona generation
-└── iui-mech-int-analysis/     # Data analysis
+└── user-study-analysis/        # Data analysis
 ```
 
 
 ### 1. Chat Interface
-Web-based experimental platform for running participant studies. See [mech-chat-iui/README.md](mech-chat-iui/README.md)
+Web-based experimental platform for running participant studies. See [interface/README.md](interface/README.md)
 
 ### 2. Persona Vectors
 Backend systems for generating AI personality vectors from neural network activations. See [persona-vectors/readme.md](persona-vectors/readme.md)
 
 ### 3. Data Analysis
-Statistical analysis pipeline and visualization tools for research data. See [iui-mech-int-analysis/README.md](iui-mech-int-analysis/README.md)
+Statistical analysis pipeline and visualization tools for research data. See [user-study-analysis/README.md](user-study-analysis/README.md)
 
 
 ## Documentation
 
 **Component READMEs:**
-- [mech-chat-iui/README.md](mech-chat-iui/README.md) - Chat interface
+- [interface/README.md](interface/README.md) - Chat interface
 - [persona-vectors/readme.md](persona-vectors/readme.md) - Persona vectors
-- [iui-mech-int-analysis/README.md](iui-mech-int-analysis/README.md) - Data analysis
+- [user-study-analysis/README.md](user-study-analysis/README.md) - Data analysis
 
 **Additional Guides:**
-- [DEMO_MODE.md](mech-chat-iui/DEMO_MODE.md) - Demo mode guide
-- [SUNBURST_VISUALIZATION.md](mech-chat-iui/SUNBURST_VISUALIZATION.md) - Visualization system
+- [DEMO_MODE.md](interface/DEMO_MODE.md) - Demo mode guide
+- [SUNBURST_VISUALIZATION.md](interface/SUNBURST_VISUALIZATION.md) - Visualization system
 
 ## License
 
