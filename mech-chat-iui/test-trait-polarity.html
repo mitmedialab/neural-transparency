@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trait Polarity Sunburst Test</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .visualization-container {
+            width: 100%;
+            height: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .info-panel {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .info-panel h2 {
+            margin-top: 0;
+            color: #333;
+            font-size: 18px;
+        }
+        
+        .trait-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 10px;
+        }
+        
+        .trait-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px;
+            background: white;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .trait-name {
+            font-weight: 500;
+        }
+        
+        .trait-value {
+            font-family: monospace;
+            color: #666;
+        }
+        
+        .positive {
+            border-left: 4px solid #4CAF50;
+        }
+        
+        .negative {
+            border-left: 4px solid #F44336;
+        }
+        
+        .transformation {
+            color: #2196F3;
+            font-size: 12px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Trait Polarity Visualization Test</h1>
+        <p class="subtitle">Testing automatic trait transformation based on semantic valuation</p>
+        
+        <div class="info-panel">
+            <h2>Input Data (Raw Trait Values)</h2>
+            <div class="trait-list">
+                <div class="trait-item">
+                    <span class="trait-name">empathy</span>
+                    <span class="trait-value">-0.107</span>
+                </div>
+                <div class="trait-item">
+                    <span class="trait-name">sociality</span>
+                    <span class="trait-value">0.075</span>
+                </div>
+                <div class="trait-item">
+                    <span class="trait-name">supportiveness</span>
+                    <span class="trait-value">-0.037</span>
+                </div>
+                <div class="trait-item">
+                    <span class="trait-name">sycophancy</span>
+                    <span class="trait-value">0.137</span>
+                </div>
+                <div class="trait-item">
+                    <span class="trait-name">toxicity</span>
+                    <span class="trait-value">-0.288</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="info-panel">
+            <h2>Transformed Traits (After Polarity Processing)</h2>
+            <div class="trait-list">
+                <div class="trait-item negative">
+                    <div>
+                        <span class="trait-name">Non-Empathic</span>
+                        <div class="transformation">empathy: -0.107 → Non-Empathic (negative trait)</div>
+                    </div>
+                </div>
+                <div class="trait-item positive">
+                    <div>
+                        <span class="trait-name">Sociality</span>
+                        <div class="transformation">sociality: 0.075 → Sociality (positive trait)</div>
+                    </div>
+                </div>
+                <div class="trait-item negative">
+                    <div>
+                        <span class="trait-name">Unsupportive</span>
+                        <div class="transformation">supportiveness: -0.037 → Unsupportive (negative trait)</div>
+                    </div>
+                </div>
+                <div class="trait-item negative">
+                    <div>
+                        <span class="trait-name">Sycophancy</span>
+                        <div class="transformation">sycophancy: 0.137 → Sycophancy (negative trait)</div>
+                    </div>
+                </div>
+                <div class="trait-item positive">
+                    <div>
+                        <span class="trait-name">Non-Toxic</span>
+                        <div class="transformation">toxicity: -0.288 → Non-Toxic (positive trait)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="sunburst" class="visualization-container"></div>
+    </div>
+
+    <script src="js/persona-sunburst.js"></script>
+    <script>
+        // Test data matching your real output
+        const personaData = {
+            empathy: -0.10697905880911046,
+            sociality: 0.07528872169550496,
+            supportiveness: -0.0373792765073818,
+            sycophancy: 0.13748006791357684,
+            toxicity: -0.28841338438788994
+        };
+
+        // Create the sunburst visualization
+        const cleanup = createPersonaSunburst(personaData, 'sunburst', {
+            width: 900,
+            height: 800,
+            centerLabel: 'Persona',
+            centerSubLabel: 'Traits',
+            animate: true,
+            showPercentages: true
+        });
+
+        // Log the transformations for debugging
+        console.log('=== Trait Transformations ===');
+        for (const [trait, value] of Object.entries(personaData)) {
+            const effective = getEffectiveTrait(trait, value);
+            console.log(`${trait}: ${value.toFixed(3)} → ${effective.name} (${effective.isPositive ? 'positive' : 'negative'})`);
+        }
+    </script>
+</body>
+</html>
+

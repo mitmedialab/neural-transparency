@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Mode Test</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .description {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        .feature-list li {
+            padding: 10px;
+            margin: 5px 0;
+            background: #f8f9fa;
+            border-radius: 4px;
+            border-left: 4px solid #2196F3;
+        }
+        .feature-list li strong {
+            color: #2196F3;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #2196F3;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: background 0.3s;
+            margin: 10px 10px 10px 0;
+        }
+        .button:hover {
+            background: #1976D2;
+        }
+        .button.secondary {
+            background: #666;
+        }
+        .button.secondary:hover {
+            background: #555;
+        }
+        .info {
+            background: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #d63384;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>🎬 Demo Mode Test</h1>
+        <p class="description">
+            Test the new demo mode feature that combines debug functionality with a streamlined 
+            user experience for demonstrations.
+        </p>
+
+        <h2>What Demo Mode Does</h2>
+        <ul class="feature-list">
+            <li><strong>Skips consent page:</strong> Goes directly to avatar selection (no consent form)</li>
+            <li><strong>Skips surveys:</strong> Both pre-task and post-task surveys are bypassed</li>
+            <li><strong>Shows visualization:</strong> Always displays the persona visualization (condition 1)</li>
+            <li><strong>Keeps helpful modals:</strong> Avatar, System Prompt, Chat, Visualization, and Refinement instruction modals</li>
+            <li><strong>Skips survey modal:</strong> The survey instruction modal is hidden</li>
+            <li><strong>Debug features:</strong> Enables all debug mode features automatically</li>
+            <li><strong>Interactive buttons:</strong> All buttons remain fully functional</li>
+        </ul>
+
+        <div class="info">
+            <strong>URL Parameter:</strong> <span class="code">?demo=true</span>
+        </div>
+
+        <h2>Test Links</h2>
+        <a href="index.html?demo=true" class="button">
+            🚀 Launch Demo Mode
+        </a>
+        <a href="index.html?demo=true&debugTimer=true" class="button secondary">
+            ⏱️ Demo Mode + Short Timer (10s)
+        </a>
+
+        <h2>Comparison Links</h2>
+        <a href="index.html" class="button secondary">
+            Normal Mode
+        </a>
+        <a href="index.html?debug=true" class="button secondary">
+            Debug Mode (all modals skipped)
+        </a>
+        <a href="index.html?skipSurvey=true" class="button secondary">
+            Skip Survey Mode (all modals skipped)
+        </a>
+
+        <h2>Implementation Details</h2>
+        <p>When <span class="code">?demo=true</span> is used, the system automatically:</p>
+        <ul>
+            <li>Sets <span class="code">debug = true</span></li>
+            <li>Sets <span class="code">skipSurvey = true</span></li>
+            <li>Forces <span class="code">visualizationCondition = 1</span></li>
+            <li>Adds <span class="code">demo = true</span> flag for demo-specific logic</li>
+        </ul>
+
+        <h2>Expected Behavior</h2>
+        <ol>
+            <li><strong>Entry:</strong> Page skips consent page completely, loads directly to avatar selection interface</li>
+            <li><strong>Avatar modal:</strong> Avatar selection instruction modal appears ✓</li>
+            <li><strong>Prompt modal:</strong> System prompt instruction modal appears ✓</li>
+            <li><strong>Survey skip:</strong> After submitting prompt, pre-task survey is completely skipped</li>
+            <li><strong>Visualization:</strong> Persona visualization always shows (forced to condition 1)</li>
+            <li><strong>Chat modal:</strong> Chat instruction modal appears when starting chat ✓</li>
+            <li><strong>Timer completion:</strong> After timer expires, post-task survey is skipped</li>
+            <li><strong>Interactivity:</strong> All buttons (Start Chat, Back to Config, etc.) remain fully functional</li>
+        </ol>
+    </div>
+</body>
+</html>
+

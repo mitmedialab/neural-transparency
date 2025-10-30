@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Persona Bar Graph Test</title>
+    
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/main.css">
+    
+    <!-- Persona Vectors JS -->
+    <script src="js/persona_vectors.js"></script>
+    
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 2rem;
+        }
+        
+        .description {
+            text-align: center;
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .test-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #48bb78;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #38a169;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.4);
+        }
+        
+        .info-box {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #e8f5e9 0%, #fff3e0 100%);
+            border-radius: 8px;
+            border-left: 4px solid #4CAF50;
+        }
+        
+        .info-box h3 {
+            margin-top: 0;
+            color: #2e7d32;
+            font-size: 1.1rem;
+        }
+        
+        .info-box ul {
+            margin: 0.5rem 0;
+            padding-left: 1.5rem;
+        }
+        
+        .info-box li {
+            margin: 0.5rem 0;
+            line-height: 1.6;
+        }
+        
+        .url-display {
+            background: rgba(0, 0, 0, 0.05);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        /* Override persona display for test */
+        #personaVectorDisplay {
+            position: relative !important;
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+        
+        .persona-vector-results {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+        }
+        
+        .persona-vector-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .close-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .close-btn:hover {
+            background: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Persona Vector Bar Graph Test</h1>
+        
+        <div class="description">
+            <p>Test page to verify that <code>?sunburst=false</code> displays a bar graph instead of the sunburst visualization.</p>
+            <p><strong>Current URL Parameter:</strong></p>
+            <div class="url-display" id="urlDisplay">Loading...</div>
+        </div>
+        
+        <div class="test-buttons">
+            <button class="btn btn-primary" onclick="testBarGraph()">
+                Test Bar Graph
+            </button>
+            <button class="btn btn-secondary" onclick="testWithNegatives()">
+                Test with Negative Values
+            </button>
+        </div>
+        
+        <div id="personaVectorDisplay"></div>
+        
+        <div class="info-box">
+            <h3>🔍 How to Test</h3>
+            <ul>
+                <li><strong>Bar Graph Mode:</strong> Add <code>?sunburst=false</code> to the URL and click "Test Bar Graph"</li>
+                <li><strong>Sunburst Mode:</strong> Add <code>?sunburst=true</code> to the URL (requires D3.js and persona-sunburst.js)</li>
+                <li><strong>Default:</strong> If no parameter is specified, it defaults to sunburst mode</li>
+                <li>The bar graph shows values from -2.0 to 2.0 with a center line at 0.0</li>
+                <li>Negative values extend left (red gradient), positive values extend right (green gradient)</li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        // Display current URL parameter status
+        function updateURLDisplay() {
+            const sunburstParam = new URLSearchParams(window.location.search).get('sunburst');
+            const displayMode = sunburstParam === 'false' ? 'Bar Graph Mode ✓' : 
+                               sunburstParam === 'true' ? 'Sunburst Mode (requires D3.js)' : 
+                               'Default (Sunburst Mode)';
+            
+            document.getElementById('urlDisplay').textContent = displayMode;
+            
+            // Also log the detected mode
+            console.log('Display Mode:', useSunburstDisplay() ? 'Sunburst' : 'Bar Graph');
+        }
+        
+        // Test data sets - hierarchical format matching exact API output
+        // Format: { category: { trait1: value [0,1], trait2: 0 } }
+        // One trait has a value, the opposite is always 0
+        const testData1 = {
+            empathy: {
+                empathetic: 0.85,
+                unempathetic: 0
+            },
+            sociality: {
+                social: 0.72,
+                antisocial: 0
+            },
+            encouraging: {
+                encouraging: 0.88,
+                discouraging: 0
+            },
+            sycophancy: {
+                honest: 0.67,
+                sycophantic: 0
+            },
+            toxicity: {
+                respectful: 0.91,
+                toxic: 0
+            }
+        };
+        
+        const testData2 = {
+            empathy: {
+                empathetic: 0.8033,
+                unempathetic: 0
+            },
+            sociality: {
+                social: 0.6984,
+                antisocial: 0
+            },
+            encouraging: {
+                encouraging: 0.6718,
+                discouraging: 0
+            },
+            sycophancy: {
+                honest: 0,
+                sycophantic: 0.7576
+            },
+            toxicity: {
+                respectful: 0,
+                toxic: 0.9048
+            },
+            formality: {
+                formal: 0,
+                casual: 0.85
+            },
+            funniness: {
+                funny: 0.68,
+                serious: 0
+            },
+            hallucination: {
+                hallucinatory: 0,
+                factual: 0.88
+            }
+        };
+        
+        function testBarGraph() {
+            const systemPrompt = "You are a helpful research assistant for the MIT Media Lab Chat Study.";
+            displayPersonaVectorRatings(testData1, systemPrompt);
+        }
+        
+        function testWithNegatives() {
+            const systemPrompt = "Testing with negative and positive values.";
+            displayPersonaVectorRatings(testData2, systemPrompt);
+        }
+        
+        // Initialize on page load
+        window.addEventListener('load', function() {
+            updateURLDisplay();
+            console.log('%c Bar Graph Test Page Loaded', 'font-weight: bold; color: #48bb78;');
+            console.log('Add ?sunburst=false to the URL to see the bar graph');
+            console.log('Add ?sunburst=true to the URL to see the sunburst (requires D3.js)');
+        });
+    </script>
+</body>
+</html>
+

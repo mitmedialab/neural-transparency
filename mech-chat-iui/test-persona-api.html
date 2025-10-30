@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Persona Vector API Test</title>
+    <style>
+        body {
+            font-family: 'Monaco', 'Courier New', monospace;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: #1e1e1e;
+            color: #d4d4d4;
+        }
+        
+        h1 {
+            color: #4FC3F7;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .test-container {
+            background: #2d2d2d;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            display: block;
+            margin: 0 auto 2rem;
+            transition: all 0.2s;
+        }
+        
+        button:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+        }
+        
+        button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        #output {
+            background: #1e1e1e;
+            border: 1px solid #444;
+            border-radius: 4px;
+            padding: 1.5rem;
+            min-height: 300px;
+            max-height: 600px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        
+        .success { color: #4CAF50; }
+        .error { color: #f44336; }
+        .warning { color: #FF9800; }
+        .info { color: #2196F3; }
+        .highlight { color: #FFD700; font-weight: bold; }
+        
+        .loading {
+            text-align: center;
+            color: #4FC3F7;
+            font-size: 1.1rem;
+            padding: 2rem;
+        }
+        
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(79, 195, 247, 0.3);
+            border-top-color: #4FC3F7;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Persona Vector API Endpoint Test</h1>
+    
+    <div class="test-container">
+        <button id="testBtn" onclick="runTest()">🚀 Run API Test</button>
+        <div id="output"></div>
+    </div>
+
+    <script>
+        const output = document.getElementById('output');
+        const testBtn = document.getElementById('testBtn');
+        
+        function log(message, type = 'normal') {
+            const className = type === 'success' ? 'success' : 
+                            type === 'error' ? 'error' : 
+                            type === 'warning' ? 'warning' : 
+                            type === 'info' ? 'info' : 
+                            type === 'highlight' ? 'highlight' : '';
+            
+            const span = document.createElement('span');
+            if (className) span.className = className;
+            span.textContent = message + '\n';
+            output.appendChild(span);
+            output.scrollTop = output.scrollHeight;
+        }
+        
+        function clearOutput() {
+            output.innerHTML = '';
+        }
+        
+        async function runTest() {
+            clearOutput();
+            testBtn.disabled = true;
+            
+            const testData = {
+                system: "You are a helpful research assistant for the MIT Media Lab Chat Study. Provide thoughtful, informative responses to help participants with their research questions. Be conversational and engaging while maintaining a professional tone."
+            };
+
+            try {
+                log('🧪 Testing Persona Vector endpoint...', 'info');
+                log('📤 Request data:', 'info');
+                log(JSON.stringify(testData, null, 2));
+                log('');
+                log('⏳ Calling API...', 'warning');
+                log('');
+                
+                const startTime = Date.now();
+                
+                const response = await fetch('/api/persona-vector', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(testData)
+                });
+                
+                const duration = ((Date.now() - startTime) / 1000).toFixed(2);
+                
+                log(`📊 Response status: ${response.status}`, response.ok ? 'success' : 'error');
+                log(`⏱️  Response time: ${duration}s`, 'info');
+                log('');
+
+                if (response.ok) {
+                    const data = await response.json();
+                    log('✅ Success! Full response:', 'success');
+                    log(JSON.stringify(data, null, 2));
+                    log('');
+                    
+                    // Analyze the response
+                    const personaData = data.content;
+                    const traitCount = personaData ? Object.keys(personaData).length : 0;
+                    
+                    log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'highlight');
+                    log('📈 RESPONSE ANALYSIS:', 'highlight');
+                    log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'highlight');
+                    log(`✓ Total traits returned: ${traitCount}`, 'info');
+                    log(`✓ Expected: 16 (8 trait pairs × 2)`, 'info');
+                    log(`✓ Match: ${traitCount === 16 ? '✅ YES' : '❌ NO'}`, traitCount === 16 ? 'success' : 'error');
+                    log('');
+                    
+                    if (personaData) {
+                        log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'highlight');
+                        log('📋 TRAIT PAIRS RECEIVED:', 'highlight');
+                        log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'highlight');
+                        
+                        // Define expected trait pairs
+                        const traitPairs = [
+                            ['empathetic', 'unempathetic'],
+                            ['encouraging', 'discouraging'],
+                            ['social', 'antisocial'],
+                            ['casual', 'formal'],
+                            ['honest', 'sycophantic'],
+                            ['funny', 'serious'],
+                            ['accurate', 'hallucinatory'],
+                            ['respectful', 'toxic']
+                        ];
+                        
+                        traitPairs.forEach(([trait1, trait2]) => {
+                            const val1 = personaData[trait1];
+                            const val2 = personaData[trait2];
+                            const sum = (val1 !== undefined && val2 !== undefined) ? (val1 + val2).toFixed(4) : 'N/A';
+                            const present = (val1 !== undefined && val2 !== undefined);
+                            
+                            log(`${present ? '✅' : '❌'} ${trait1.padEnd(15)} ${val1 !== undefined ? val1.toFixed(4) : 'MISSING'}`, present ? 'success' : 'error');
+                            log(`   ${trait2.padEnd(15)} ${val2 !== undefined ? val2.toFixed(4) : 'MISSING'} (sum: ${sum})`);
+                            log('');
+                        });
+                        
+                        log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'highlight');
+                        log('🔍 VALIDATION:', 'highlight');
+                        log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'highlight');
+                        
+                        // Check all pairs sum to 1.0
+                        let allPairsValid = true;
+                        traitPairs.forEach(([trait1, trait2]) => {
+                            const val1 = personaData[trait1];
+                            const val2 = personaData[trait2];
+                            if (val1 !== undefined && val2 !== undefined) {
+                                const sum = val1 + val2;
+                                if (Math.abs(sum - 1.0) > 0.001) {
+                                    log(`❌ ${trait1}/${trait2} pair doesn't sum to 1.0: ${sum.toFixed(4)}`, 'error');
+                                    allPairsValid = false;
+                                }
+                            }
+                        });
+                        
+                        if (allPairsValid) {
+                            log('✅ All trait pairs sum to 1.0 (±0.001)', 'success');
+                        }
+                        
+                        // Check value ranges
+                        let allValuesInRange = true;
+                        Object.entries(personaData).forEach(([trait, value]) => {
+                            if (value < 0 || value > 1) {
+                                log(`❌ ${trait} value out of range [0,1]: ${value}`, 'error');
+                                allValuesInRange = false;
+                            }
+                        });
+                        
+                        if (allValuesInRange) {
+                            log('✅ All values in range [0, 1]', 'success');
+                        }
+                        
+                        log('');
+                        log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'highlight');
+                        log('🎯 TEST RESULT: ' + (traitCount === 16 && allPairsValid && allValuesInRange ? 'PASSED ✅' : 'FAILED ❌'), 
+                            traitCount === 16 && allPairsValid && allValuesInRange ? 'success' : 'error');
+                        log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'highlight');
+                    }
+                } else {
+                    const errorData = await response.json();
+                    log('❌ Error response:', 'error');
+                    log(JSON.stringify(errorData, null, 2), 'error');
+                }
+            } catch (error) {
+                log('❌ Network error:', 'error');
+                log(error.message, 'error');
+                console.error('Full error:', error);
+            } finally {
+                testBtn.disabled = false;
+            }
+        }
+        
+        // Auto-run test on page load (optional - comment out if you don't want this)
+        // setTimeout(runTest, 500);
+    </script>
+</body>
+</html>
+

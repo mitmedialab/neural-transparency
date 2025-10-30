@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="robots" content="noindex" />
+        
+        <!-- MIT Media Lab Favicon -->
+        <link rel="icon" href="favicon.ico" type="image/x-icon" />
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+
+        <!-- Page Title -->
+        <title>MIT Media Lab Chat Study</title>
+
+        <!-- jQuery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
+
+        <!-- D3.js for Sunburst Visualization -->
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+
+        <!-- Metadata and Configuration -->
+        <script src="js/metadata.js"></script>
+        
+        <!-- Settings Configuration - Must load BEFORE other scripts -->
+        <script src="js/settings.js"></script>
+        
+        <!-- Unified Configuration for Local and Vercel Deployment -->
+        <script src="js/config-unified.js"></script>
+
+        <!-- Persona Sunburst Visualization -->
+        <script src="js/persona-sunburst.js"></script>
+        
+        <!-- Persona Vectors -->
+        <script src="js/persona_vectors.js"></script>
+
+        <!-- Firebase Config -->
+        <!-- <script src="js/firebaseconfig.js"></script> -->
+        <script src="js/firebasepsych1.1.js" type="module"></script>
+         
+        <!-- Main CSS Styles -->
+        <link rel="stylesheet" href="css/main.css" />
+        
+
+        <!--
+            Load all pages necessary for experiment:
+                - Consent Page
+                - Instructions
+                - Comprehension Quiz
+                - Experiment
+                - Completed Page
+        -->
+        <script>
+            $(document).ready(function(){
+                // Use settings from global settings object
+                const debugMode = window.experimentSettings.debug;
+                const freshMode = window.experimentSettings.fresh;
+                
+                // Fresh mode: Clear all storage to simulate a fresh participant
+                if (freshMode) {
+                    console.log('🆕 Fresh mode: Clearing all experiment data at entry point');
+                    
+                    // Check if this is the first time we're seeing the fresh parameter
+                    const alreadyFreshed = sessionStorage.getItem('freshModeApplied');
+                    
+                    if (!alreadyFreshed) {
+                        // First time seeing fresh=true, need to clear and reload
+                        console.log('🧹 Clearing all localStorage and sessionStorage');
+                        
+                        // Clear all storage
+                        localStorage.clear();
+                        sessionStorage.clear();
+                        
+                        // Set a flag so we know we've already done the fresh clear
+                        sessionStorage.setItem('freshModeApplied', 'true');
+                        
+                        // Remove fresh parameter from URL and reload with cache-busting
+                        const newUrl = new URL(window.location);
+                        newUrl.searchParams.delete('fresh');
+                        newUrl.searchParams.set('_t', Date.now());
+                        
+                        console.log('🔄 Reloading page with fresh cache...');
+                        window.location.href = newUrl.toString();
+                        return; // Stop execution, page will reload
+                    } else {
+                        // Second time through (after reload), clean up
+                        console.log('✅ Fresh mode applied successfully');
+                        sessionStorage.removeItem('freshModeApplied');
+                        
+                        // Remove the cache-busting parameter from URL
+                        const newUrl = new URL(window.location);
+                        newUrl.searchParams.delete('_t');
+                        if (newUrl.search !== window.location.search) {
+                            window.history.replaceState({}, '', newUrl);
+                        }
+                    }
+                }
+                
+                // Pre-load models immediately when page loads
+                if (typeof preloadModels === 'function') {
+                    preloadModels();
+                }
+                
+                if (debugMode){
+                    // Debug mode - skip directly to avatar selection / chat interface
+                    // console.log('🐛 Debug mode enabled - skipping to chat interface');
+                    // $('#consent-main-content').load("html/consent.html?v=" + Date.now());
+                    $("#consent-main-content").attr("hidden", true);
+                    // $("#task-header").attr("hidden", false);
+                    $("#task-main-content").attr("hidden", false);
+                    $('#task-main-content').load('html/chat-content.html?v=' + Date.now());
+                } else{
+                    // Production mode - start with consent
+                    $('#consent-main-content').load("html/consent.html?v=" + Date.now());
+                }
+
+                // Function to hide consent and show chat interface
+                window.showChatInterface = function() {
+                    $("#consent-main-content").attr("hidden", true);
+                    $("#task-header").attr("hidden", false);
+                    $("#task-main-content").attr("hidden", false);
+                    $('#task-main-content').load('html/chat-content.html?v=' + Date.now());
+                };
+            });
+        </script>
+
+    </head>
+    <body>
+        <!-- <header class="site-header">
+            <div class="container">
+                <div class="header-center">
+                    <h2 id="experiment-title">MIT Media Lab Chat Study</h2>
+                </div>
+            </div>
+        </header> -->
+
+        <main role="main" id="super-container">
+            <div class="main-container">
+                <!--
+                    PAGE HEADER
+
+                    This is the main title at the top of the page.
+                    This should change throughout the experiment; going
+                    from consent to instructions to experiment, etc.
+
+                    Be sure to modify the section titles in the
+                    metadata.js file. The titles to be
+                    modified are:
+
+                        - consent-header
+                        - instructions-header
+                        - comprehension-quiz-header
+                        - task-header
+                        - experiment-complete-header
+                -->
+                <div class="row page-title justify-content-center">
+                    <!--
+                        Consent Page
+                    -->
+                    <h2 class="page-title-header" id="consent-header" hidden = "true">
+                        Consent Page
+                    </h2>
+                    <!--
+                        Instructions
+                    -->
+                    <!-- <h2 class="page-title-header" id="instructions-header" hidden="true">
+                        Instructions
+                    </h2> -->
+                    <!--
+                        Comprehension
+                    -->
+                    <h2 class="page-title-header" id="comprehension-quiz-header"  hidden="true">
+                        Comprehension Quiz
+                    </h2>
+                    <!--
+                    **********************
+                    *   Trial Information
+                    **********************
+                    -->
+                    <h2 class="page-title-header" id="task-header" hidden="true">
+                        
+                    </h2>
+                    <!--
+                        Experiment Survey Page
+                    -->
+                    <h2 class="page-title-header" id="exp-survey-header" hidden="true">
+                        Survey
+                    </h2>
+                    <!--
+                        Experiment Completed Page
+                    -->
+                    <h2 class="page-title-header" id="exp-complete-header" hidden="true">
+                        Experiment Complete
+                    </h2>
+                </div>
+                <!---------------------------------------------------------------------------------------------------->
+                <!---------------------------------------------------------------------------------------------------->
+
+
+                <!---------------------------------------------------------------------------------------------------->
+                <!--                                        MAIN CONTENT                                            -->
+                <!---------------------------------------------------------------------------------------------------->
+                <div class="page-content">
+                    <!-- CONSENT PAGE -->
+                    <div class="card" id="consent-main-content">
+                        
+                    </div>
+                    <!-- INSTRUCTIONS -->
+                    <div class="card" id="instructions-main-content" hidden="true">
+                        
+                    </div>
+                    <!-- COMPREHENSION QUIZ PAGE -->
+                    <div class="card" id="comprehension-quiz-main-content" hidden="true">
+                        
+                    </div>
+                    <!-- EXPERIMENT -->
+                    <div class="card" id="task-main-content" hidden="true">
+                        
+                    </div>
+                    <!-- EXPERIMENT SURVEY -->
+                    <div class="card" id="survey-main-content" hidden="true">
+                        
+                    </div>
+                    <!-- TASK COMPLETE -->
+                    <div class="card" id="task-complete" hidden="true">
+                        
+                    </div>
+                </div>
+            </div>       
+        </main>
+
+
+        <!-- Custom JavaScript -->
+    </body>
+</html>

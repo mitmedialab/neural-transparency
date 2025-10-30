@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Persona Sunburst Test</title>
+    
+    <!-- D3.js -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    
+    <!-- Persona Sunburst -->
+    <script src="js/persona-sunburst.js"></script>
+    
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 2rem;
+        }
+        
+        .test-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #48bb78;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #38a169;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(72, 187, 120, 0.4);
+        }
+        
+        .btn-tertiary {
+            background: #ed8936;
+            color: white;
+        }
+        
+        .btn-tertiary:hover {
+            background: #dd6b20;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(237, 137, 54, 0.4);
+        }
+        
+        #sunburstContainer {
+            min-height: 900px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 10px;
+            padding: 2rem;
+            overflow: visible;
+        }
+        
+        .description {
+            text-align: center;
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .data-display {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .data-display pre {
+            margin: 0.5rem 0 0 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .info-box {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #e8f5e9 0%, #fff3e0 100%);
+            border-radius: 8px;
+            border-left: 4px solid #4CAF50;
+        }
+        
+        .info-box h3 {
+            margin-top: 0;
+            color: #2e7d32;
+            font-size: 1.1rem;
+        }
+        
+        .info-box ul {
+            margin: 0.5rem 0;
+            padding-left: 1.5rem;
+        }
+        
+        .info-box li {
+            margin: 0.5rem 0;
+            line-height: 1.6;
+        }
+        
+        .code {
+            background: rgba(0, 0, 0, 0.05);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        
+        .positive-label {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        
+        .negative-label {
+            color: #F44336;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌞 Persona Vector Sunburst Visualization Test</h1>
+        
+        <div class="description">
+            <p>Interactive test page for the D3.js sunburst visualization with <strong>hierarchical data format</strong>.</p>
+            <p><strong>Categories:</strong> Positive Traits (Green) • Negative Traits (Red) • <strong>⚪ Neutral Traits (Grey)</strong></p>
+            <p><strong>Mirror Mode:</strong> Neutral traits (funny/serious, casual/formal) appear in grey section at bottom</p>
+            <p><strong>Exact API Format:</strong> One trait has value [0,1], opposite is 0</p>
+            <p>Example: <code>{ empathy: { empathetic: 0.8, unempathetic: 0 } }</code></p>
+        </div>
+        
+        <div class="test-buttons">
+            <button class="btn btn-primary" onclick="testRealData()">
+                Test Real Data (From API)
+            </button>
+            <button class="btn btn-secondary" onclick="testPositiveTraits()">
+                Test Positive Traits
+            </button>
+            <button class="btn btn-tertiary" onclick="testNegativeTraits()">
+                Test Negative Traits
+            </button>
+            <button class="btn btn-primary" onclick="testMixedTraits()">
+                Test Mixed Polarity
+            </button>
+            <button class="btn btn-secondary" onclick="testNeutralCategory()">
+                ⚪ Test Neutral Category
+            </button>
+            <button class="btn btn-secondary" onclick="testCustomCategories()">
+                Test Custom Categories
+            </button>
+            <button class="btn btn-tertiary" onclick="testRandomize()">
+                Randomize Values
+            </button>
+        </div>
+        
+        <div style="text-align: center; margin-bottom: 1rem;">
+            <button id="layoutToggle" class="btn btn-primary" onclick="toggleLayout()" style="background: #9C27B0;">
+                Toggle Layout: <span id="layoutMode">Mirrored (90° axis)</span>
+            </button>
+        </div>
+        
+        <div id="sunburstContainer"></div>
+        
+        <div class="info-box">
+            <h3>🔄 How Trait Pair Processing Works</h3>
+            <ul>
+                <li><strong>API Format:</strong> Returns trait pairs where one has value [0,1], other is 0
+                    <br>• Example: <span class="code">{empathetic: 0.8, unempathetic: 0}</span>
+                </li>
+                <li><strong>Display Logic:</strong> Only the non-zero trait is displayed
+                    <br>• <span class="code">empathetic: 0.8</span> and <span class="code">unempathetic: 0</span> → shows <span class="positive-label">Empathetic (0.8)</span>
+                    <br>• <span class="code">toxic: 0.7</span> and <span class="code">respectful: 0</span> → shows <span class="negative-label">Toxic (0.7)</span>
+                </li>
+                <li><strong>Categorization (Mirror Mode):</strong>
+                    <br>• <span class="positive-label">Positive traits</span> (empathetic, encouraging, honest, etc.) → Right side (Green)
+                    <br>• <span class="negative-label">Negative traits</span> (toxic, sycophantic, hallucinatory, etc.) → Left side (Red)
+                    <br>• <strong>⚪ Neutral traits</strong> (funny, serious, casual, formal) → Bottom section (Grey)
+                </li>
+                <li><strong>Opposite Mode:</strong> Positive and negative only (no neutral category)</li>
+                <li>Check the browser console to see all trait pairs and processing!</li>
+            </ul>
+        </div>
+        
+        <div class="data-display">
+            <strong>Current Data (Raw Input):</strong>
+            <pre id="dataDisplay">Click a button to load data...</pre>
+        </div>
+    </div>
+    
+    <script>
+        // Test data sets matching API format
+        
+        // Real API data format - NEW HIERARCHICAL format
+        // Format: { category: { trait1: value [0,1], trait2: 0 } }
+        // One trait has a value, the opposite is always 0
+        const realAPIData = {
+            empathy: {
+                empathetic: 0.8033,
+                unempathetic: 0
+            },
+            encouraging: {
+                encouraging: 0.6718,
+                discouraging: 0
+            },
+            sociality: {
+                social: 0.6984,
+                antisocial: 0
+            },
+            formality: {
+                formal: 0,
+                casual: 0.9519
+            },
+            sycophancy: {
+                sycophantic: 0.7576,
+                honest: 0
+            },
+            funniness: {
+                funny: 0.7985,
+                serious: 0
+            },
+            hallucination: {
+                hallucinatory: 0,
+                factual: 0.9827
+            },
+            toxicity: {
+                toxic: 0,
+                respectful: 0.8952
+            }
+        };
+        
+        // Mostly positive traits - dominant positive traits (hierarchical format)
+        const positiveTraitsData = {
+            empathy: {
+                empathetic: 0.85,
+                unempathetic: 0
+            },
+            encouraging: {
+                encouraging: 0.92,
+                discouraging: 0
+            },
+            sociality: {
+                social: 0.78,
+                antisocial: 0
+            },
+            sycophancy: {
+                honest: 0.88,
+                sycophantic: 0
+            },
+            funniness: {
+                funny: 0.65,
+                serious: 0
+            },
+            hallucination: {
+                factual: 0.91,
+                hallucinatory: 0
+            },
+            toxicity: {
+                respectful: 0.94,
+                toxic: 0
+            }
+        };
+        
+        // Mostly negative traits - dominant negative traits (hierarchical format)
+        const negativeTraitsData = {
+            toxicity: {
+                toxic: 0.95,
+                respectful: 0
+            },
+            sycophancy: {
+                sycophantic: 0.88,
+                honest: 0
+            },
+            hallucination: {
+                hallucinatory: 0.75,
+                factual: 0
+            },
+            empathy: {
+                unempathetic: 0.82,
+                empathetic: 0
+            },
+            encouraging: {
+                discouraging: 0.71,
+                encouraging: 0
+            },
+            sociality: {
+                antisocial: 0.65,
+                social: 0
+            }
+        };
+        
+        // Mixed traits - balanced positive and negative traits (hierarchical format)
+        const mixedPolarityData = {
+            empathy: {
+                empathetic: 0.80,
+                unempathetic: 0
+            },
+            encouraging: {
+                encouraging: 0.72,
+                discouraging: 0
+            },
+            sociality: {
+                social: 0.60,
+                antisocial: 0
+            },
+            toxicity: {
+                toxic: 0.55,
+                respectful: 0
+            },
+            sycophancy: {
+                sycophantic: 0.68,
+                honest: 0
+            },
+            hallucination: {
+                hallucinatory: 0.52,
+                factual: 0
+            }
+        };
+        
+        // Custom categories data (bypasses automatic polarity)
+        const customCategoriesData = {
+            categories: [
+                {
+                    name: "Positive Traits",
+                    color: "#66BB6A",
+                    items: [
+                        { name: "Empathy", value: 1.5 },
+                        { name: "Creativity", value: 1.2 },
+                        { name: "Honesty", value: 1.8 },
+                        { name: "Resilience", value: 1.4 },
+                        { name: "Curiosity", value: 1.6 }
+                    ]
+                },
+                {
+                    name: "Cognitive Style",
+                    color: "#757575",
+                    items: [
+                        { name: "Analytical", value: 0.8 },
+                        { name: "Intuitive", value: 0.5 },
+                        { name: "Detail-Oriented", value: 0.3 },
+                        { name: "Big Picture", value: 0.7 }
+                    ]
+                },
+                {
+                    name: "Social Tendencies",
+                    color: "#2196F3",
+                    items: [
+                        { name: "Assertiveness", value: 0.5 },
+                        { name: "Warmth", value: 0.9 },
+                        { name: "Sociability", value: 0.2 },
+                        { name: "Leadership", value: 0.3 }
+                    ]
+                }
+            ]
+        };
+        
+        let currentData = realAPIData;
+        let useOppositeLayout = false; // Track current layout mode - default to mirror (shows neutral)
+        
+        function toggleLayout() {
+            useOppositeLayout = !useOppositeLayout;
+            const modeText = useOppositeLayout ? 'Opposite (π apart)' : 'Mirrored (90° axis)';
+            document.getElementById('layoutMode').textContent = modeText;
+            
+            // Redraw with current data and new layout
+            createPersonaSunburst(currentData, 'sunburstContainer', {
+                width: 900,
+                height: 900,
+                centerLabel: 'Toggle',
+                centerSubLabel: 'Test',
+                animate: true,
+                oppositeLayout: useOppositeLayout
+            });
+        }
+        
+        function displayData(data) {
+            const display = document.getElementById('dataDisplay');
+            display.textContent = JSON.stringify(data, null, 2);
+            
+            // Log transformations to console
+            console.log('\n=== Data Structure ===');
+            if (data.categories) {
+                console.log('Custom categories format');
+            } else {
+                // Check if hierarchical
+                const firstValue = Object.values(data)[0];
+                if (firstValue && typeof firstValue === 'object') {
+                    console.log('Hierarchical format detected');
+                    for (const [category, traits] of Object.entries(data)) {
+                        console.log(`${category}:`, traits);
+                    }
+                } else {
+                    console.log('Flat format detected');
+                }
+            }
+        }
+        
+        function testRealData() {
+            currentData = realAPIData;
+            createPersonaSunburst(realAPIData, 'sunburstContainer', {
+                width: 900,
+                height: 900,
+                centerLabel: 'API',
+                centerSubLabel: 'Response',
+                animate: true,
+                oppositeLayout: useOppositeLayout
+            });
+            displayData(realAPIData);
+        }
+        
+        function testPositiveTraits() {
+            currentData = positiveTraitsData;
+            createPersonaSunburst(positiveTraitsData, 'sunburstContainer', {
+                width: 900,
+                height: 900,
+                centerLabel: 'Positive',
+                centerSubLabel: 'Profile',
+                animate: true,
+                oppositeLayout: useOppositeLayout
+            });
+            displayData(positiveTraitsData);
+        }
+        
+        function testNegativeTraits() {
+            currentData = negativeTraitsData;
+            createPersonaSunburst(negativeTraitsData, 'sunburstContainer', {
+                width: 900,
+                height: 900,
+                centerLabel: 'Negative',
+                centerSubLabel: 'Profile',
+                animate: true,
+                oppositeLayout: useOppositeLayout
+            });
+            displayData(negativeTraitsData);
+        }
+        
+        function testMixedTraits() {
+            currentData = mixedPolarityData;
+            createPersonaSunburst(mixedPolarityData, 'sunburstContainer', {
+                width: 900,
+                height: 900,
+                centerLabel: 'Mixed',
+                centerSubLabel: 'Profile',
+                animate: true,
+                oppositeLayout: useOppositeLayout
+            });
+            displayData(mixedPolarityData);
+        }
+        
+        function testNeutralCategory() {
+            // Test data with neutral traits (funny/serious, casual/formal) to verify grey category
+            const neutralTestData = {
+                empathy: {
+                    empathetic: 0.82,
+                    unempathetic: 0
+                },
+                encouraging: {
+                    encouraging: 0.75,
+                    discouraging: 0
+                },
+                sociality: {
+                    social: 0.68,
+                    antisocial: 0
+                },
+                formality: {
+                    formal: 0,
+                    casual: 0.88  // Neutral trait
+                },
+                sycophancy: {
+                    sycophantic: 0.45,
+                    honest: 0
+                },
+                funniness: {
+                    funny: 0.92,  // Neutral trait
+                    serious: 0
+                },
+                hallucination: {
+                    hallucinatory: 0,
+                    factual: 0.95
+                },
+                toxicity: {
+                    toxic: 0,
+                    respectful: 0.87
+                }
+            };
+            
+            // Force mirror mode for neutral category test
+            useOppositeLayout = false;
+            document.getElementById('layoutMode').textContent = 'Mirrored (90° axis)';
+            
+            currentData = neutralTestData;
+            createPersonaSunburst(neutralTestData, 'sunburstContainer', {
+                width: 900,
+                height: 900,
+                centerLabel: 'Neutral',
+                centerSubLabel: 'Test',
+                animate: true,
+                oppositeLayout: false  // Force mirror mode
+            });
+            displayData(neutralTestData);
+            
+            console.log('⚪ Testing Neutral Category:');
+            console.log('- Funny and Casual should appear in GREY section at BOTTOM');
+            console.log('- Positive traits (empathetic, encouraging, social, factual, respectful) should be on RIGHT');
+            console.log('- Negative trait (sycophantic) should be on LEFT');
+            console.log('- Layout should be symmetrically mirrored around vertical axis');
+        }
+        
+        function testCustomCategories() {
+            currentData = customCategoriesData;
+            createPersonaSunburst(customCategoriesData, 'sunburstContainer', {
+                width: 900,
+                height: 900,
+                centerLabel: 'Custom',
+                centerSubLabel: 'Persona',
+                animate: true,
+                oppositeLayout: useOppositeLayout
+            });
+            displayData(customCategoriesData);
+        }
+        
+        function testRandomize() {
+            // Generate random hierarchical data
+            const categories = [
+                'empathy',
+                'encouraging', 
+                'sociality',
+                'formality',
+                'sycophancy',
+                'funniness',
+                'hallucination',
+                'toxicity'
+            ];
+            
+            const traitPairs = {
+                empathy: ['empathetic', 'unempathetic'],
+                encouraging: ['encouraging', 'discouraging'],
+                sociality: ['social', 'antisocial'],
+                formality: ['formal', 'casual'],
+                sycophancy: ['sycophantic', 'honest'],
+                funniness: ['funny', 'serious'],
+                hallucination: ['hallucinatory', 'factual'],
+                toxicity: ['toxic', 'respectful']
+            };
+            
+            // Randomly select 5-8 categories
+            const numCategories = 5 + Math.floor(Math.random() * 4);
+            const selectedCategories = categories.sort(() => Math.random() - 0.5).slice(0, numCategories);
+            
+            const randomData = {};
+            selectedCategories.forEach(category => {
+                const [trait1, trait2] = traitPairs[category];
+                // Randomly pick which trait gets the value (other gets 0)
+                const useFirstTrait = Math.random() > 0.5;
+                randomData[category] = {
+                    [trait1]: useFirstTrait ? Math.round(Math.random() * 1000) / 1000 : 0, // Random [0,1] or 0
+                    [trait2]: useFirstTrait ? 0 : Math.round(Math.random() * 1000) / 1000
+                };
+            });
+            
+            console.log('🎲 Generated random hierarchical data with', numCategories, 'categories');
+            console.log('Data:', randomData);
+            
+            currentData = randomData;
+            createPersonaSunburst(randomData, 'sunburstContainer', {
+                width: 900,
+                height: 900,
+                centerLabel: 'Random',
+                centerSubLabel: 'Profile',
+                animate: true,
+                oppositeLayout: useOppositeLayout
+            });
+            displayData(randomData);
+        }
+        
+        // Load real API data on page load
+        window.addEventListener('load', function() {
+            testRealData();
+        });
+    </script>
+</body>
+</html>
+
