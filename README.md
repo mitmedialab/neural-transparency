@@ -2,9 +2,15 @@
 
 A research platform for studying neural transparency in AI systems through persona vector analysis and interactive chat interfaces.
 
-## Project Overview
+## Repository Structure
 
-This repository contains three main components:
+```
+neural-transparency-1/
+├── mech-chat-iui/              # Chat interface
+├── persona-vectors/            # Persona generation
+└── iui-mech-int-analysis/     # Data analysis
+```
+
 
 ### 1. Chat Interface
 Web-based experimental platform for running participant studies. See [mech-chat-iui/README.md](mech-chat-iui/README.md)
@@ -15,40 +21,6 @@ Backend systems for generating AI personality vectors from neural network activa
 ### 3. Data Analysis
 Statistical analysis pipeline and visualization tools for research data. See [iui-mech-int-analysis/README.md](iui-mech-int-analysis/README.md)
 
-## Quick Start
-
-**Demo Mode** - Test all features instantly:
-```
-http://localhost:3000?demo=true
-```
-
-**Deploy Study:**
-```bash
-cd mech-chat-iui
-vercel
-```
-
-**Local Development:**
-```bash
-cd mech-chat-iui
-vercel dev
-# Or use Python: python -m http.server 8000
-```
-
-**Run Analysis:**
-```bash
-cd iui-mech-int-analysis
-jupyter notebook
-```
-
-## Repository Structure
-
-```
-neural-transparency-1/
-├── mech-chat-iui/              # Chat interface
-├── persona-vectors/            # Persona generation
-└── iui-mech-int-analysis/     # Data analysis
-```
 
 ## Documentation
 
