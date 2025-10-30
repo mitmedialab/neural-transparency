@@ -122,9 +122,9 @@ def get_mean_response_activation(model, system_prompt, prompt, max_length, num_r
             activations = []
             for layer_idx in range(num_layers):
                 # get activation of predicted token
-                activations.append(cache[f"blocks.{layer_idx}.hook_resid_mid"][:, -1, :]) # (10, 3072)
+                activations.append(cache[f"blocks.{layer_idx}.hook_resid_post"][:, -1, :]) 
             # concatenate across layers
-            activations = torch.stack(activations, dim=1) # (10, 26, 2304)
+            activations = torch.stack(activations, dim=1) 
             all_activations.append(activations)
 
             # sample
@@ -152,13 +152,11 @@ def get_mean_response_activation(model, system_prompt, prompt, max_length, num_r
 
 
 def main():
-
-    login(token="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")
-    openai = OpenAIAPI(api_key="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")
+    login(token=os.environ.get('HF_API_KEY'))
+    openai = OpenAIAPI(api_key=os.environ.get('ANTHROPIC_API_KEY'))
     torch.manual_seed(42)
     args = parse_args()
 
-    # model = HookedTransformer.from_pretrained("google/gemma-2-2b-it")
     model = HookedTransformer.from_pretrained("meta-llama/Llama-3.2-3B-Instruct")
 
     folder_path = Path("stored_prompts/")
@@ -274,7 +272,6 @@ def main():
             torch.save(persona_vector, f"persona_vectors/{trait}_persona_vector.pt")
             print(f"{trait}_persona_vector.pt saved")
 
-            # Save all responses to JSON
             os.makedirs("llama_responses", exist_ok=True)
             save_json(all_responses, f"llama_responses/{trait}_responses.json")
             print(f"Saved responses to llama_responses/{trait}_responses.json")

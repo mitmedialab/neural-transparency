@@ -94,9 +94,9 @@ def get_final_prompt_activation(model, prompt):
         activations = []
         for layer_idx in range(num_layers):
             # get activation of predicted token
-            activations.append(cache[f"blocks.{layer_idx}.hook_resid_mid"][:, -1, :])
+            activations.append(cache[f"blocks.{layer_idx}.hook_resid_post"][:, -1, :])
         # concatenate across layers
-        activation = torch.cat(activations, dim=0) # (26, 2304)
+        activation = torch.cat(activations, dim=0) 
 
     return activation, length
 
@@ -126,9 +126,9 @@ def generate_persona_scores(model, system_prompt):
 
 def main():
 
-    login(token="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")
+    login(token=os.environ.get('HF_API_KEY'))
     torch.manual_seed(42)
-    api_key = "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"
+    api_key = os.environ.get('ANTHROPIC_API_KEY')
     claude = ClaudeAPI(api_key)
 
     folder_path = Path("stored_persona_vectors")

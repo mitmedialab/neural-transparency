@@ -200,7 +200,6 @@ def main():
     """
 
     while True:
-
         response = claude.send_message(
         question_dataset_prompt,
         model="claude-3-5-haiku-20241022", 
@@ -280,8 +279,6 @@ def main():
         json.dump(data, f)
 
     print("Trait evaluation prompt created.")
-
-
 
 
 if __name__ == "__main__":

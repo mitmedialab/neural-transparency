@@ -6,6 +6,7 @@ import json
 from tqdm import tqdm
 import numpy as np
 from scipy import stats
+import os
            
         
 def load_json(filepath: str) -> dict:
@@ -131,7 +132,7 @@ def print_summary_statistics(results_by_layer):
 
 def main():
 
-    login(token="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")
+    login(token=os.environ.get('HF_API_KEY'))
     torch.manual_seed(42)
     
     prompts_file = Path("system_prompts_5.json")

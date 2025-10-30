@@ -7,6 +7,7 @@ from tqdm import tqdm
 import numpy as np
 from scipy import stats
 import matplotlib.pyplot as plt
+import os
            
         
 def load_json(filepath: str) -> dict:
@@ -219,7 +220,7 @@ def print_summary_statistics(results_layer_20):
 
 def main():
 
-    login(token="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")
+    login(token=os.environ.get('HF_API_KEY'))
     torch.manual_seed(42)
     
     # Make sure matplotlib doesn't try to open windows

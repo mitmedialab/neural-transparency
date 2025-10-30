@@ -84,9 +84,9 @@ def load_json(filepath: str) -> dict:
 
 def main():
 
-    login(token="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")
+    login(token=os.environ.get('HF_API_KEY'))
     torch.manual_seed(42)
-    api_key = "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"
+    api_key = os.environ.get('ANTHROPIC_API_KEY')
     claude = ClaudeAPI(api_key)
 
     traits_file = Path("../persona_vectors/stored_persona_vectors/traits.json")
