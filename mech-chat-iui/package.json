@@ -1,0 +1,27 @@
+{
+  "name": "mit-media-lab-chat-study",
+  "version": "1.0.0",
+  "description": "MIT Media Lab Chat Study - Serverless deployment on Vercel",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'Static site - no build step required'",
+    "deploy": "vercel --prod"
+  },
+  "keywords": [
+    "chat",
+    "study",
+    "research",
+    "claude",
+    "anthropic",
+    "vercel"
+  ],
+  "author": "MIT Media Lab",
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.24.3"
+  },
+  "devDependencies": {
+    "vercel": "^32.0.0"
+  }
+}
