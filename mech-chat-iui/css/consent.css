@@ -1,0 +1,41 @@
+/*
+consent.css
+
+    Author      :   Helio Tejeda
+    University  :   University of California, Irvine
+    Lab         :   Modeling and Decision-Making Lab (MADLAB)
+
+Consent Page styling file.
+
+Every element in the consent page that needs styling will be in here.
+
+Everything is in order as it appears in the HTML file (top to bottom).
+*/
+
+/**************************************
+*   
+**************************************/
+#consent-text-header {
+    color: #0064a4;
+}
+
+#header-message {
+    color: red;
+}
+
+#university-seal {
+    margin: 5px 5px;
+}
+
+#consent-form-box {
+    border: 2px solid #0064a4;
+    border-radius: 5px;
+    background-color: rgba(0,0,0,0.02);
+    padding: 10px;
+    margin:0 auto;
+}
+
+#consent-form-button {
+    text-align: center;
+    margin-bottom: 10px;
+}

@@ -1,0 +1,149 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="css/consent.css">
+        <!--
+            Custom JavaScript - Consent Page Metadata and Functionality
+        -->
+        <script>
+            // Load consent.js with cache-busting (wrapped in IIFE to avoid variable conflicts)
+            (function() {
+                var script = document.createElement('script');
+                script.src = 'js/consent.js?v=' + Date.now();
+                script.type = 'module';
+                document.head.appendChild(script);
+            })();
+        </script>
+    </head>
+    <body>
+        <div class="col-12 trialbox">
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6">
+                    <div class="block-text">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <p>
+                                            <h3 id="consent-text-header"><b>Welcome to the experiment!</b></h3>
+                                        </p>
+                                        <p id="header-message">
+                                            <b>Please, read the information below <b>carefully</b> before you decide to participate in this study.</b>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <img id="university-seal" src="images/ml_logo.png" alt="MIT Media Lab logo"
+                                            style="max-width: 125px; max-height: 125px; width: auto; height: auto; object-fit: contain;"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <div class="highlight">
+                        <hr />
+                        <h3 align="center">
+                            <b>Participant Information Sheet</b>
+                        </h3>
+
+                        <h5><b>Project Summary</b></h5>
+                        <p class="ml-4" id="experiment-summary">
+                            The information here should be set in the js/consent-page-metadata.js file under
+                            EXPERIMENT_SUMMARY.
+                        </p>
+
+                        <h5><b>Time Commitment</b></h5>
+                        <p class="ml-4">
+                            The study typically takes
+                            <b><i>
+                                <text id="time-commitment">
+                                    40-50 minutes
+                                </text>
+                            </i></b>
+                            to complete.
+                            <br />
+                            <b><u>Note</u> :</b> This page will not save your progress.
+                            <!--If you close the window or navigate away from the page, all progress
+                            will be lost and you would have to restart the experiment to complete the HIT.-->
+                        </p>
+
+                        <h5><b>Benefits & Risks</b></h5>
+                        <p class="ml-4" id="benefits-and-risks">
+                            The information here should be set in the js/consent-page-metadata.js file under
+                            BENEFITS_AND_RISKS.
+                        </p>
+
+                        <h5><b>Eligibility Requirements</b></h5>
+                        <p class="ml-4" id="eligibility-requirements">
+                            The information here should be set in the js/consent-page-metadata.js file under
+                            ELIGIBILITY_REQUIREMENTS.
+                        </p>
+
+                        <h5><b>Reimbursement & Compensation</b></h5>
+                        <p class="ml-4">
+                            You will be compensated $5 USD for your involvement.
+                        </p>
+
+                        <h5><b>Confidentiality & Anonymity</b></h5>
+                        <p class="ml-4">
+                            All research data collected will be stored securely and confidentially on a password protected server indefinitely.
+                            Identifying details will not be associated with any data provided by you as part of any publication or presentation.
+                        </p>
+
+                        <h5><b>Contact Information</b></h5>
+                        <p class="ml-4">
+                            Media Lab, Massachusetts Institute of Technology
+                            <br /> <!--<br />If you have questions, concerns, suggestions, or complaint, please contact:<br />-->
+                            <span><b>Lead Researcher : </b>
+                                <i>
+                                    <text id="lead-researcher">
+                                        Sheer Karny
+                                    </text>
+                                </i>
+                            </span>
+                                (<a id="lead-researcher-email" target="_top">skarny@media.mit.edu</a>)
+                            <br />
+                        
+                        </p>
+                        <br />
+                        <hr />
+                    </div>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <div class="row justify-content-center">
+                        <h3>
+                            <b>Consent Form</b>
+                        </h3>
+                    </div>
+                    <div class="row">
+                        <div id="consent-form-box">
+                            <p>
+                                <input type="checkbox" name="terms" id="terms" value="True">  <b>Check here</b> to confirm that:
+                                you have read and understood the <i>Participant Information Sheet</i>,
+                                you are taking part in this research study voluntarily,
+                                you meet the eligility requirements,
+                                and you are agreeing that your anonymised data may be shared in public repositories.
+                            </p>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div id="consent-form-button" class="col-md-12">
+                            <input class="btn btn-primary btn-sm" type="submit" name="submit" id="submit-consent" value="Submit and Proceed" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2"></div>
+            </div>
+        </div>
+    </body>
+</html>
