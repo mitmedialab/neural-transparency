@@ -1,6 +1,14 @@
-# Neural Transparency: Mechanistic Interpretability for Human-AI Interaction
+# Neural Transparency: Mechanistic Interpretability Interfaces for Anticipating Model Behaviors for Personalized AI
 
-A research platform for studying neural transparency in AI systems through persona vector analysis and interactive chat interfaces.
+![synthetic](assets/synthetic.png)
+
+## Author
+- Sheer Karny
+- Anthony Baez
+- Pat Pataranutaporn
+
+## Abstract
+Millions of users now design personalized LLM-based chatbots that shape their daily interactions, yet they can only loosely anticipate how their design choices will manifest as behaviors in deployment. This opacity is consequential: seemingly innocuous prompts can trigger excessive sycophancy, toxicity, or inconsistency, degrading utility and raising safety concerns. To address this issue, we introduce an interface that enables __neural transparency__ by exposing language model internals during chatbot design. Our approach extracts behavioral trait vectors (empathy, toxicity, sycophancy, etc.) by computing differences in neural activations between contrastive system prompts that elicit opposing behaviors. We predict chatbot behaviors by projecting the system prompt's final token activations onto these trait vectors, normalizing for cross-trait comparability, and visualizing results via an interactive sunburst diagram. To evaluate this approach, we conducted an online user study using Prolific to compare our neural transparency interface against a baseline chatbot interface without any form of transparency. Our analyses suggest that users systematically miscalibrated AI behavior: participants misjudged trait activations for eleven of fifteen analyzable traits, motivating the need for transparency tools in everyday human-AI interaction. While our interface did not change design iteration patterns, it significantly increased user trust and was enthusiastically received. Qualitative analysis indicated that users' had nuanced experiences with the visualization that may enrich future work designing neurally transparent interfaces. This work offers a path for how mechanistic interpretability can be operationalized for non-technical users, establishing a foundation for safer, more aligned human-AI interactions.
 
 ## Repository Structure
 
