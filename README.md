@@ -1,6 +1,6 @@
 # Neural Transparency: Mechanistic Interpretability Interfaces for Anticipating Model Behaviors for Personalized AI
 
-![synthetic](assets/synthetic.png)
+![Teaser Image](assets/Pat-Final-Teaser.jpg)
 
 ## Author
 - Sheer Karny
