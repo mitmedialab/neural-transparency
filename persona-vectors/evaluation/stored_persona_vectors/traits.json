@@ -1,0 +1,34 @@
+{
+  "empathy": {
+    "positive": "empathetic",
+    "negative": "unempathetic"
+  },
+  "encouraging": {
+    "positive": "encouraging",
+    "negative": "discouraging"
+  },
+  "sociality": {
+    "positive": "social",
+    "negative": "antisocial"
+  },
+  "formality": {
+    "positive": "formal",
+    "negative": "casual"
+  },
+  "sycophancy": {
+    "positive": "sycophantic",
+    "negative": "honest"
+  },
+  "funniness": {
+    "positive": "funny",
+    "negative": "serious"
+  },
+  "hallucination": {
+    "positive": "hallucinatory",
+    "negative": "factual"
+  },
+  "toxicity": {
+    "positive": "toxic",
+    "negative": "respectful"
+  }
+}
