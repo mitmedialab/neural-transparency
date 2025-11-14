@@ -51,3 +51,12 @@ Research project from MIT Media Lab focusing on neural transparency and mechanis
 
 Built with: D3.js, Anthropic Claude, Vercel, Firebase, Modal
 
+## Citation
+If you use this code or data in your research, please use this citation:
+
+  @article{karny2025neural,
+    title={Neural Transparency: Mechanistic Interpretability Interfaces for Anticipating Model Behaviors for Personalized AI},
+    author={Karny, Sheer and Baez, Anthony and Pataranutaporn, Pat},
+    journal={arXiv preprint arXiv:2511.00230},
+    year={2025}
+  }
